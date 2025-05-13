@@ -20,7 +20,7 @@ public class SortJob implements Runnable {
             engine.submitJob(new SortJob(cars, low, pivotIndex - 1, engine));
             engine.submitJob(new SortJob(cars, pivotIndex + 1, high, engine));
 
-            // System.out.println("Working from " + Thread.currentThread().getName());
+//            System.out.println("Working from " + Thread.currentThread().getName());
         }
     }
 

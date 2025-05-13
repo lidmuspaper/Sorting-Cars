@@ -7,19 +7,27 @@ public class QuicksortEngine {
     private final int maxThreads;
     private final List<WorkerThread> threadPool;
     private final LinkedList<SortJob> jobQueue;
-    private boolean isShutdown;
 
     public QuicksortEngine(int maxThreads) {
         this.maxThreads = maxThreads;
         this.threadPool = new LinkedList<>();
         this.jobQueue = new LinkedList<>();
-        this.isShutdown = false;
     }
 
     public void quickSort(List<Car> carList) {
         submitJob(new SortJob(carList, 0, carList.size() - 1, this));
+//        long startTime;
+//        synchronized (this) {
+//            startTime = System.currentTimeMillis();
+//
+//        }
+//        long endTime = System.currentTimeMillis();
+//        System.out.println("List " + " sorted in " + (endTime - startTime) + " ms.");
     }
 
+    /*
+        * Adds SortJob to queue and notifies threads waiting on it, initializes new threads if there is room in the pool
+     */
     public synchronized void submitJob(SortJob job) {
         synchronized (jobQueue) {
             jobQueue.add(job);
@@ -32,10 +40,13 @@ public class QuicksortEngine {
         }
     }
 
-    public void awaitTermination() {
+    /*
+        * Waits for all jobs to finish
+     */
+    public void waitForCompletion() {
         while (!jobQueue.isEmpty() || !areThreadsWaiting()) {
             try {
-                System.out.println("Waiting for threads to finish...");
+                System.out.println("Waiting...");
                 Thread.sleep(100); // Check periodically
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -43,8 +54,23 @@ public class QuicksortEngine {
         }
     }
 
+    /*
+        * Waits for all jobs to finish and then clears the thread pool
+     */
     public synchronized void shutdown() {
-        System.out.println("All threads have finished.");
+//        for (WorkerThread thread : threadPool) {
+//            try {
+//                thread.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        for (WorkerThread thread : threadPool) {
+//            thread.interrupt();
+//        }
+
+        System.out.println("Shutting down thread pool...");
         threadPool.clear();
     }
 

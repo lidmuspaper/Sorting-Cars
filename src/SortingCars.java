@@ -31,10 +31,18 @@ public class SortingCars {
             engine.quickSort(carList);
         }
 
-        engine.awaitTermination();
+        System.out.println("Waiting for sorting to finish...");
+        engine.waitForCompletion();
+
         engine.shutdown();
 
         System.out.println("Finished sorting async...");
+        for (List<Car> carList : carLists) {
+            // If item is in compareTo order, item, otherwise null, if null eventually appears, the list is not sorted
+            System.out.println("List " + (carLists.indexOf(carList) + 1) + " sorted: " + carList.stream()
+                    .reduce((prev, curr) -> curr.compareTo(prev) >= 0 ? curr : null)
+                    .isPresent());
+        }
 
 //        System.out.println("Begin sorting sync...");
 //        for (List<Car> carList : carLists) {
