@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 import java.security.SecureRandom;
 
+import static java.lang.System.exit;
+
 public class SortingCars {
     private static final SecureRandom RANDOM = new SecureRandom();
     private static final String[] DESTINATIONS = {"Los Angeles", "Houston", "New Orleans", "Miami", "New York"};
@@ -56,6 +58,8 @@ public class SortingCars {
         for (int i = 0; i < numberOfLists; i++) {
             saveToFile(carLists.get(i),"cars-" + (i + 1) + "-sorted.txt");
         }
+
+        exit(0);
     }
 
     private static List<Car> generateCars(int count) {
